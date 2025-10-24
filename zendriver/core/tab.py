@@ -384,15 +384,15 @@ class Tab(Connection):
         items: List[Element] = []
         loop = asyncio.get_running_loop()
         start_time = loop.time()
-        
+
         while (loop.time() - start_time) < timeout and len(items) == 0:
             try:
                 await self.send(cdp.dom.enable(), True)
-                items = await self.find_all(xpath, timeout=0) 
-            except Exception as e:
-                pass # find_elements_by_text may raise exception
+                items = await self.find_all(xpath, timeout=0)
+            except Exception:
+                pass  # find_elements_by_text may raise exception
             await self.disable_dom_agent()
-        
+
         return items
 
     async def get(
